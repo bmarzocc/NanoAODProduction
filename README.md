@@ -8,7 +8,7 @@ Install:
     cd CMSSW_13_3_1_patch1/src/
     cmsenv
     git cms-init
-    git cms-checkout-topic bmarzocc:NanoAODv13_EGMVars_13_3_1_patch1
+    git cms-checkout-topic bmarzocc:NanoAODv13_EGMVars_13_3_1_patch1 #if you want to add additional EGM variables
     git clone git@github.com:bmarzocc/NanoAODProduction.git
     scram b -j 10
 
