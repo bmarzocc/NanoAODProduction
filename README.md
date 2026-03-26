@@ -3,16 +3,17 @@ NanoAODProduction
 
 Install:
 
-    #Enter into lxplus8-machine 
-    scram project CMSSW_13_3_1_patch1
-    cd CMSSW_13_3_1_patch1/src/
+    #Enter into lxplus8-machine or lxplus9-machine
+    scram project CMSSW_15_0_15_patch4
+    cd CMSSW_15_0_15_patch4/src/
     cmsenv
     git cms-init
-    git cms-checkout-topic bmarzocc:NanoAODv13_EGMVars_13_3_1_patch1 #if you want to add additional EGM variables
+    git cms-checkout-topic bmarzocc:NanoAODRunv15_NewDRNVars_15_0_15_patch4 #if you want to add additional DRN variables
     git clone git@github.com:bmarzocc/NanoAODProduction.git
+    git checkout Run2v15
     scram b -j 10
 
 Run:
 
-    cd NanoAODProduction/NanoAODv13/test/
-    cmsRun step_NanoAODv13_Run2_UL16_preVFP_cfg.py 
+    cd NanoAODProduction/NanoAODv15/test/
+    cmsRun step_NanoAODv15_Run2_UL18_cfg.py 
