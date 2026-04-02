@@ -2,13 +2,12 @@
 # using: 
 # Revision: 1.19 
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
-# with command line options: --python_filename step_NanoAODv13_Run2_UL18_cfg.py --eventcontent NANOAODSIM --customise Configuration/DataProcessing/Utils.addMonitoring --datatier NANOAODSIM --fileout file:nanoAODv13_UL18.root --conditions 106X_upgrade2018_realistic_v16_L1v1 --step NANO --nThreads 4 --filein file:HIG-RunIISummer20UL17MiniAODv2-13380.root --era Run2_2018,run2_nanoAOD_106Xv2 --no_exec --mc -n 10000
+# with command line options: --eventcontent NANOAODSIM1 --customise Configuration/DataProcessing/Utils.addMonitoring --datatier NANOAODSIM --conditions 150X_mcRun3_2024_realistic_v2 --step NANO --scenario pp --era Run3_2024 --nThreads 4 --python_filename step7_NANOAODSIMv15_cfg.py --fileout file:step7_NANOAODSIM.root --filein file:step6_MINIAODSIM.root --no_exec --mc -n -1
 import FWCore.ParameterSet.Config as cms
 
-from Configuration.Eras.Era_Run2_2018_cff import Run2_2018
-from Configuration.Eras.Modifier_run2_nanoAOD_106Xv2_cff import run2_nanoAOD_106Xv2
+from Configuration.Eras.Era_Run3_2024_cff import Run3_2024
 
-process = cms.Process('NANO',Run2_2018,run2_nanoAOD_106Xv2)
+process = cms.Process('NANO',Run3_2024)
 
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
@@ -23,13 +22,13 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1),
+    input = cms.untracked.int32(2000),
     output = cms.optional.untracked.allowed(cms.int32,cms.PSet)
 )
 
 # Input source
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/mc/RunIISummer20UL18MiniAODv2/RSGravitonTo2G_kMpl-001_M-150_TuneCP5_13TeV_pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/130000/0711678D-08BD-8344-86B5-776DAB47CC24.root'),
+    fileNames = cms.untracked.vstring('file:step6_MINIAODSIM.root'),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -67,21 +66,21 @@ process.options = cms.untracked.PSet(
 
 # Production Info
 process.configurationMetadata = cms.untracked.PSet(
-    annotation = cms.untracked.string('--python_filename nevts:10000'),
+    annotation = cms.untracked.string('--eventcontent nevts:-1'),
     name = cms.untracked.string('Applications'),
     version = cms.untracked.string('$Revision: 1.19 $')
 )
 
 # Output definition
 
-process.NANOAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
+process.NANOAODSIM1output = cms.OutputModule("NanoAODOutputModule",
     compressionAlgorithm = cms.untracked.string('LZMA'),
     compressionLevel = cms.untracked.int32(9),
     dataset = cms.untracked.PSet(
         dataTier = cms.untracked.string('NANOAODSIM'),
         filterName = cms.untracked.string('')
     ),
-    fileName = cms.untracked.string('file:nanoAODv13_UL18.root'),
+    fileName = cms.untracked.string('file:step7_NANOAODSIM.root'),
     outputCommands = process.NANOAODSIMEventContent.outputCommands
 )
 
@@ -89,15 +88,15 @@ process.NANOAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
 
 # Other statements
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, '106X_upgrade2018_realistic_v16_L1v1', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '150X_mcRun3_2024_realistic_v2', '')
 
 # Path and EndPath definitions
 process.nanoAOD_step = cms.Path(process.nanoSequenceMC)
 process.endjob_step = cms.EndPath(process.endOfProcess)
-process.NANOAODSIMoutput_step = cms.EndPath(process.NANOAODSIMoutput)
+process.NANOAODSIM1output_step = cms.EndPath(process.NANOAODSIM1output)
 
 # Schedule definition
-process.schedule = cms.Schedule(process.nanoAOD_step,process.endjob_step,process.NANOAODSIMoutput_step)
+process.schedule = cms.Schedule(process.nanoAOD_step,process.endjob_step,process.NANOAODSIM1output_step)
 from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
 associatePatAlgosToolsTask(process)
 
