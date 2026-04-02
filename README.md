@@ -18,3 +18,4 @@ Run:
     cd NanoAODProduction/Summer24NanoAODv15/test/
     cmsRun step6_MINIAODSIM_cfg.py #Produce MINIAOD with additional Mustache info
     cmsRun step7_NANOAODSIMv15_cfg.py #Produce Summer24NanoAODv15 samples
+    cmsRun step7_NANOAODSIMv15_from_AOD_cfg.py #Produce Summer24NanoAODv15 samples with additional Mustache info
